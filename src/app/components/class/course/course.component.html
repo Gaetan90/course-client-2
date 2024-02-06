@@ -1,0 +1,38 @@
+<style>
+    .navbar__separator.navbar__separator--v {
+        width: 1px;
+        height: 20px;
+    }
+    .navbar__separator {
+        display: block;
+        width: 12px;
+        height: 4px;
+        border-radius: 2px;
+        background: rgba(149,156,182,.5);
+        margin: 0 1.5rem 0 0;
+    }
+</style>
+
+<nav class="navbar navbar-expand navbar-light bg-light">
+    <a class="navbar-brand" href="#">Courses</a>
+    <span class="navbar__separator navbar__separator--v"></span>
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav">
+            <li class="nav-item ">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Search</mat-label>
+                    <input matInput [(ngModel)]="Course_filter" placeholder="" value=""  ngChange=filterCourse()>
+                </mat-form-field>
+            </li>
+        </ul>
+        <ul class="nav navbar-nav row justify-content-end " style="width: 100%;">
+            <li class="nav-item col-sm-2">
+                <a mat-raised-button routerLink="/courses/newcourse" routerLinkActive="active" color="accent" class="accent">New Course</a>
+            </li>
+        </ul>
+
+    </div>
+</nav>
+<div *ngFor="let Course of Courses | sortDESC:'enable'">
+    <app-update-course  [Course]="Course"></app-update-course >
+</div>

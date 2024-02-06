@@ -1,0 +1,22 @@
+
+
+.navbar__separator.navbar__separator--v {
+    width: 1px;
+    height: 20px;
+}
+.navbar__separator {
+    display: block;
+    width: 12px;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(149,156,182,.5);
+    margin: 0 1.5rem 0 0;
+}
+
+table{
+    width: 100%;
+}
+
+mat-list-option[aria-selected="true"] {
+    border-left: #3f51b5 8px solid !important;;
+}

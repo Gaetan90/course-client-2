@@ -1,0 +1,230 @@
+<style>
+
+  ::ng-deep #app-container{
+      max-width: none !important;
+  }
+    .navbar__separator.navbar__separator--v {
+        width: 1px;
+        height: 20px;
+    }
+    .navbar__separator {
+        display: block;
+        width: 12px;
+        height: 4px;
+        border-radius: 2px;
+        background: rgba(149,156,182,.5);
+        margin: 0 1.5rem 0 0;
+    }
+
+    hr{
+        margin:6px 0;
+    }
+    .list-inspections{
+        width: 35%;
+        padding: 0px 10px 5px 10px;
+        display: inline-block;
+        position: fixed;
+    }
+    .inspection-details{
+        width: 65%;
+        background-color: white;
+        display: inline-block;
+        padding: 5px;
+        margin-left: 35%;
+    }
+    .mat-h6{
+        font-size: calc(12px)!important
+    }
+
+    mat-list-option[aria-selected="true"] {
+      border-left: #066472 8px solid !important;;
+  }
+  .mat-badge-content {
+      background-color: #066472;
+  }
+  mat-list-option[aria-selected="false"]{
+    padding-left: 8px;
+  }
+  ::ng-deep .mat-list-text{
+    padding-left: 12px !important;
+    padding-right: 0px !important;
+  }
+  ::ng-deep .mat-list-item{
+    height: 60px !important;
+  }
+
+  ::ng-deep .mat-list-item-content{
+    padding: 0 !important;
+  }
+  ::ng-deep .mat-badge-content {
+    top: 4px !important;
+    left: 0px !important;
+    width: 35px !important;
+    height: 35px !important;
+    line-height: 34px !important;
+    font-size: 20px !important;
+  }
+  ::ng-deep .list-option-title{
+    padding-left: 45px !important;
+  }
+  ::ng-deep .mat-list-base .mat-list-item .mat-list-item-content-reverse, .mat-list-base .mat-list-option .mat-list-item-content-reverse {
+    padding: 0 5px !important;
+  }
+  ::ng-deep .mat-expansion-panel-body{
+    padding: 0 0px 16px!important;
+  }
+  .BK-Checked{
+    background-color: #06647299;
+    text-align: center;
+  }
+  .BK--No-Checked{
+    background-color: #06647230;
+  }
+  .comment-name{
+    font-weight: bold;
+  }
+  </style>
+
+  <div class="inspection-page">
+
+    <nav class="navbar navbar-expand navbar-light bg-light">
+        <a class="navbar-brand" href="#">Inspections</a>
+        <span class="navbar__separator navbar__separator--v"></span>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item ">
+
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="row">
+        <div class="list-inspections">
+            <div style="background-color: white; height: 100%;">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Search</mat-label>
+                    <input matInput  placeholder="" value=""  ngChange="">
+                </mat-form-field>
+                <mat-selection-list #inspectionSelectList [multiple]="false">
+                    <mat-list-option class="mat-primary" *ngFor="let Inspection of Inspections | sortDESC:'createDate' ; let i = index;" [value]="Inspection" [selected]="i == 0">
+                        <span matBadge="{{Inspection.Class.client.name.charAt(0).toUpperCase()}}" matBadgeOverlap="false"></span>
+                        <span class="list-option-title">
+                            {{Inspection.Class.client.name}}
+                            <h6 class="mb-2 text-muted mat-h6 ">{{Inspection.createDate | date: "MM/dd/yyyy hh:mm a"}}<span>&nbsp;</span> </h6>
+                        </span>
+                    </mat-list-option>
+                  </mat-selection-list>
+            </div>
+
+        </div>
+        <div id="inspectionDetail" class="inspection-details" #inspectionDetail>
+          <a style="cursor: pointer" (click)="exportInspectionPdf2()">
+            <mat-icon> cloud_download</mat-icon>
+          </a>
+          <h1 style="margin: 0 0 3px;">{{InspectionSelected.Class.client.name}}</h1>
+          <!-- <h5>{{InspectionSelected.Class.client.MainProvider.suffix}} {{InspectionSelected.Class.client.MainProvider.firstName}} {{InspectionSelected.Class.client.MainProvider.lastName}}</h5>
+          <mat-tab-group animationDuration="0ms">
+              <mat-tab *ngFor="let InspectionDetail of InspectionSelected.InspectionDetails | sortASC:'Room.name'" label="{{ InspectionDetail.Room.name}} #{{InspectionDetail.roomNumber}}">
+                <div class="tab-content p-4" *ngFor="let Picture of InspectionDetail.Pictures">
+                  <div style="">
+                    <img src="{{urlApi}}/{{Picture.imageName}}" alt="" style="height: 40rem;" >
+                  </div>
+                  <div class="m-2 p-2"  (mouseenter)="onFocus($event, Picture.id)" (mouseleave)="outFocus($event, Picture.id)" style="padding-right: 150px; border-radius: 10px;">
+                    <button mat-raised-button class="Edit-{{Picture.id}} mat-primary"  style="display: none;position: absolute; right: 47px;" (click)="editPicture(InspectionDetail.id, Picture.id)"><mat-icon>settings</mat-icon></button>
+                    <p class="text-{{Picture.Rank.color}}">{{Picture.Comment.name}}</p>
+                    <p *ngIf="Picture.note">Note: {{Picture.note}}</p>
+                  </div>
+              </div>
+              </mat-tab>
+            </mat-tab-group> -->
+            <div id="InspectionPage" >
+              <style>
+                  .BK-Checked{
+                    background-color: #06647299;
+                    text-align: center;
+                  }
+                  .BK--No-Checked{
+                    background-color: #06647230;
+                  }
+
+              </style>
+            <div  *ngFor="let InspectionDetail of InspectionSelected.InspectionDetails; let i=index">
+              <style>
+                .BK-Checked{
+                  background-color: #06647299;
+                  text-align: center;
+                }
+                .BK--No-Checked{
+                  background-color: #06647230;
+                }
+
+            </style>
+            <h2>{{(InspectionDetail.roomName == null ? InspectionDetail.Room.name + " #InspectionDetail.roomNumber": InspectionDetail.roomName)}}</h2>
+            <table id="table-1-{{InspectionDetail.id}}" width="100%" class="">
+              <thead style="font-size: 12px;" border="0">
+                <tr align="center">
+                  <th width="15">S</th>
+                  <th width="15">F</th>
+                  <th width="15">P/D</th>
+                  <th width="15">N/A</th>
+                  <th>Comment</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody >
+                  <tr *ngFor="let Picture of InspectionDetail.Pictures | sortASC:'imageName'; let y=index" valign="top" >
+                    <td [ngClass]="Picture.Rank.id == 1 ? 'BK-Checked': 'BK--No-Checked'" style="border:.5px solid black"><span *ngIf="Picture.Rank.id == 1" >X</span></td>
+                    <td [ngClass]="Picture.Rank.id == 2 ? 'BK-Checked': 'BK--No-Checked'" style="border:.5px solid black"><span *ngIf="Picture.Rank.id == 2" >X</span></td>
+                    <td [ngClass]="Picture.Rank.id == 3 ? 'BK-Checked': 'BK--No-Checked'" style="border:.5px solid black"><span *ngIf="Picture.Rank.id == 3">X</span></td>
+                    <td [ngClass]="Picture.Rank.id == 4 ? 'BK-Checked': 'BK--No-Checked'" style="border:.5px solid black"><span *ngIf="Picture.Rank.id == 4">X</span></td>
+
+                    <td style="border:.5px solid black"><b>{{i+1}}.{{y}} {{Picture.Comment.name}} ({{Picture.id}})</b><br *ngIf="Picture.note != null">{{Picture.note}}</td>
+                    <td style="border:.5px solid black; text-align: center;">
+                      <mat-icon (click)="editPicture(InspectionDetail.id, Picture.id)" style="color:#066472 ;cursor: pointer; margin: auto;">settings</mat-icon>
+                      <!-- <hr style="background-color: #64b4af;">
+                      <mat-icon (click)="editPicture(InspectionDetail.id, Picture.id)" style="color: #c60000;cursor: pointer; margin: auto;">delete</mat-icon> -->
+                   </td>
+                  </tr>
+              </tbody>
+            </table>
+            <span style="font-size: 10px;"> S: Satisfactory - F: Fair - P/D: Poor/Defective - N/A: Not Applicable</span>
+            <table border="0" id="table-2-{{InspectionDetail.id}}">
+              <tbody>
+                <tr *ngFor="let ip of createRange(InspectionDetail)" >
+                    <td *ngIf="InspectionDetailWithoutPicture[i].Pictures[ip] != undefined"  style=" padding: 1rem 2rem;   vertical-align: top; width: 33%; text-align: center;">
+                      <span style=" display: inline-block;">
+                        <p>{{i+1}}.{{ip}} {{InspectionDetailWithoutPicture[i].Room.name}}</p>
+                        <img src="{{urlApi}}/{{InspectionDetailWithoutPicture[i].Pictures[ip].imageName}}" alt="" style="max-height: 20em;
+                        " >
+                        <br>
+                      </span>
+                    </td>
+                    <td *ngIf="InspectionDetailWithoutPicture[i].Pictures[ip+1] != undefined; else noPicture" style="  padding: 1rem 1rem;  vertical-align: top; width: 33%;text-align: center;">
+                      <span style=" display: inline-block;">
+                        <p>{{i+1}}.{{ip+1}} {{InspectionDetailWithoutPicture[i].Room.name}}</p>
+                        <img src="{{urlApi}}/{{InspectionDetailWithoutPicture[i].Pictures[ip+1].imageName}}" alt="" style="max-height: 20em;
+                        " >
+                        <br>
+                      </span>
+                    </td>
+                    <td *ngIf="InspectionDetailWithoutPicture[i].Pictures[ip+2] != undefined; else noPicture" style="  padding: 1rem 1rem;  vertical-align: top; width: 33%;text-align: center;">
+                      <span style=" display: inline-block;">
+                        <p>{{i+1}}.{{ip+2}} {{InspectionDetailWithoutPicture[i].Room.name}}</p>
+                        <img src="{{urlApi}}/{{InspectionDetailWithoutPicture[i].Pictures[ip+2].imageName}}" alt="" style="max-height: 20em;
+                        " >
+                        <br>
+                      </span>
+                    </td>
+                    <ng-template #noPicture>
+                      <td style="width: 33%;"></td>
+                    </ng-template>
+                </tr>
+            </tbody>
+            </table>
+          </div>
+          </div>
+        </div>
+    </div>
+
+  </div>
+

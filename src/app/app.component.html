@@ -1,0 +1,93 @@
+
+<body class="mat-typography body">
+  <style>
+    body{
+      background-color: #f2f2f2;
+    }
+    a.nav-link{
+      min-width: 150px;
+      text-align: center;
+    }
+    #app-container{
+    margin: 0 10px;
+    padding-top: 0;
+
+  }
+
+
+  </style>
+  <header class="header">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light menu-navbar">
+      <a style="width: 205px;text-align: center;" class="navbar-brand" href="https://www.msdssafety.com/" target="_blanket"><img width="140" src="assets/img/msds_logo.png" alt=""></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div *ngIf="currentUser"  class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a routerLink="/classes" routerLinkActive="active"  class="nav-link" >Classes </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/clients" routerLinkActive="active" class="nav-link" >Clients</a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/courses" routerLinkActive="active" class="nav-link" >Courses </a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Settings
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" routerLink="/settings/coursecategories">Course Categories</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" routerLink="/settings/clienttypes">Client Types</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" routerLink="/settings/teachingmodes">Teaching Modes</a>
+              <div class="dropdown-divider"  ></div>
+              <a class="dropdown-item" routerLink="/settings/studenttitles" >Medical Titles</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" routerLink="/settings/studenttypes">Student Types</a>
+              <div *ngIf="currentUser.isAdmin" class="dropdown-divider"></div>
+              <a *ngIf="currentUser.isAdmin" class="dropdown-item" routerLink="/settings/users">Users</a>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/inspections" routerLinkActive="active" class="nav-link" >Inspections </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/staffmembers" routerLinkActive="active" class="nav-link" >Staff Members </a>
+          </li>
+          <!-- <li class="nav-item">
+            <a routerLink="/audits" routerLinkActive="active" class="nav-link" >Audits </a>
+          </li> -->
+          <!-- <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Dropdown
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="#">Action</a>
+              <a class="dropdown-item" href="#">Another action</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+          </li> -->
+        </ul>
+         <div *ngIf="currentUser" class="form-inline my-2 my-lg-0">
+           <p style="margin: auto 0;">Hello, {{currentUser.firstName}} {{currentUser.lastName}}</p>
+          <a mat-flat-button  (click)="logout()">Logout</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <app-loader></app-loader>
+
+  <div id="app-container" style="padding-top: 52px;">
+    <router-outlet></router-outlet>
+  </div>
+  <footer style="height:150px; background-color: white;" *ngIf="!router.url.includes('invoicepdf')">
+    <h3></h3>
+  </footer>
+</body>
+
+

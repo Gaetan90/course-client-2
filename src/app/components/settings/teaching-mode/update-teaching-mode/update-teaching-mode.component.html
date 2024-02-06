@@ -1,0 +1,40 @@
+
+<style>
+    .update-teachingmode-container{
+        margin: auto;
+        padding: 20px 20px 5px 20px;
+        background-color: white;
+    }
+    mat-form-field.mat-form-field {
+    font-size: 16px;
+    width: 100%;
+    }
+</style>
+
+<div class="update-teachingmode-container">
+    <form class="update-teachingmode-form" [formGroup]="TeachingModeForm" (ngSubmit)="onUpdateTeachingMode()">
+
+        <div class="row ">
+            <div class="col-sm-8">
+                <mat-form-field>
+                    <mat-label>Name</mat-label>
+                    <input matInput required placeholder="Enter the Name of the Teaching Mode" formControlName="name" >
+                </mat-form-field>
+            </div>
+            <div class="col-md-1" style="margin:auto; text-align: center;">
+                <mat-slide-toggle  formControlName="enable">Enable</mat-slide-toggle> 
+            </div>
+            <div class="col-md-2" style="margin:auto; text-align: center;">
+                <mat-slide-toggle  formControlName="isTravelMiles">Is Travel Miles</mat-slide-toggle> 
+            </div>
+            <div class="col-sm-1" style="text-align: center;">
+                <button style="position: absolute;
+                bottom: 14px;
+                right: 16px;" class="btn btn-success" [disabled]="TeachingModeForm.invalid"
+                type="submit">Update
+            </button>
+            </div>
+        </div>
+    </form>
+    <hr>
+</div>

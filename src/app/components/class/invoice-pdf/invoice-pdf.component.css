@@ -1,0 +1,6 @@
+.header, .header-space, .footer, .footer-space { height: 100px; }
+:host(.header)
+    { 
+        display: none!important; 
+    }
+.footer { position: fixed; bottom: 0; }

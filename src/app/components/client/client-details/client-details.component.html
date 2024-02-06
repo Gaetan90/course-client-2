@@ -1,0 +1,281 @@
+<style>
+    .navbar__separator.navbar__separator--v {
+        width: 1px;
+        height: 20px;
+    }
+    .navbar__separator {
+        display: block;
+        width: 12px;
+        height: 4px;
+        border-radius: 2px;
+        background: rgba(149,156,182,.5);
+        margin: 0 1.5rem 0 0;
+    }
+
+    hr{
+        margin:6px 0;
+    }
+    .list-clients, .list-classes{
+        width: 35%;
+        padding: 0px 10px 5px 10px;
+        display: inline-block;
+    }
+    .client-details, .classes-details{
+        width: 65%;
+        background-color: white;
+        display: inline-block;
+    }
+
+    .client-actions{
+        width: 24%;
+        background-color: white;
+        display: inline-block;
+        padding: 5px;
+    }
+    .mat-h6{
+        font-size: calc(12px)!important
+    }
+
+mat-list-option[aria-selected="true"] {
+    border-left: #64b4af 8px solid !important;;
+}
+mat-list-option[aria-selected="false"]{
+    padding-left: 8px;
+}
+::ng-deep .mat-list-text{
+    padding-left: 12px !important;
+    padding-right: 0px !important;
+}
+::ng-deep .mat-list-item{
+    height: 60px !important;
+}
+
+::ng-deep .mat-list-item-content{
+    padding: 0 !important;
+}
+.mat-badge-content {
+    top: 4px !important;
+    left: 0px;
+    width: 35px;
+    height: 35px;
+    line-height: 34px;
+    font-size: 20px;
+    background-color: #64b4af;
+}
+::ng-deep .list-option-title{
+    padding-left: 45px !important;
+}
+::ng-deep .mat-list-base .mat-list-item .mat-list-item-content-reverse, .mat-list-base .mat-list-option .mat-list-item-content-reverse {
+    padding: 0 5px !important;
+}
+::ng-deep .mat-expansion-panel-body{
+    padding: 0 0px 16px!important;
+}
+</style>
+<div class="row">
+  <div class="col-10">
+    <h1 style="margin: 0 0 3px;">{{Client.name}}</h1>
+    <h5>{{Client.MainProvider.firstName}} {{Client.MainProvider.lastName}}</h5>
+    <mat-tab-group animationDuration="0ms">
+        <mat-tab label="Billing & Contact">
+            <div >
+              <div class="card">
+                  <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center">
+                      <h2 id="client-billing-contact-tab" class="card-title"> Billing Address </h2>
+                  </div>
+                  <address *ngIf="Client.MainAddress.address1 != null"> {{Client.MainAddress.address1}} <br> {{Client.MainAddress.city}}, {{Client.MainAddress.state}} {{Client.MainAddress.zip}} </address>
+                </div>
+              </div>
+            </div>
+            <div class="tab-content pt-4">
+                <div class="card">
+                    <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h2 id="client-billing-contact-tab" class="card-title"> Contact </h2>
+                    </div>
+                    <p class="card-text">  <mat-icon aria-hidden="false" aria-label="Example home icon">email</mat-icon> <span class="icon-title"> <a href="mailto:{{Client.email}}">{{Client.email}}</a> </span></p>
+                    <p class="card-text">  <mat-icon aria-hidden="false" aria-label="Example home icon">phone</mat-icon> <span class="icon-title">{{Client.phoneNumber}}</span></p>
+                    <p class="card-text">  <mat-icon aria-hidden="false" aria-label="Example home icon">website</mat-icon> <span class="icon-title"><a target="_blank" href="http://{{Client.website}}">{{Client.website}}</a></span></p>
+
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab label="Adresses">
+          <div >
+            <div class="card">
+                <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2 id="client-billing-contact-tab" class="card-title"> Addresses </h2>
+                </div>
+                <ul>
+                  <li *ngFor="let address of Client.Addresses">
+                    <address > {{address.address1}} <br> {{address.city}}, {{address.state}} {{address.zip}} </address>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="Students">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h2 id="client-billing-contact-tab" class="card-title"> Sudents </h2>
+                    </div>
+                    <div class="row">
+                        <mat-form-field>
+                            <mat-label>Filter</mat-label>
+                            <input matInput (keyup)="applyFilter($event)"  placeholder="Ex. ium">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label><mat-icon aria-hidden="false" >filter_list</mat-icon>
+                            </mat-label>
+                            <mat-select [(value)]="studentFilter" placeholder="Mode">
+                            <mat-option [value]="2" >
+                                All
+                            </mat-option>
+                            <mat-option [value]="1">
+                                Enable
+                            </mat-option>
+                            <mat-option [value]="0">
+                                Disable
+                            </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <table mat-table  [dataSource]="dataSource" matSort matSortActive="isMainProvider" matSortDirection="desc" style="width: 100%;">
+                        <!-- Position Column -->
+                        <ng-container matColumnDef="title">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Title </th>
+                            <td mat-cell *matCellDef="let element"> {{element.TitleStudent.name}} </td>
+                        </ng-container>
+
+                        <!-- Position Column -->
+                        <ng-container matColumnDef="firstName">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> First Name </th>
+                        <td mat-cell *matCellDef="let element"> {{element["firstName"]}} </td>
+                        </ng-container>
+
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="lastName">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </th>
+                        <td mat-cell *matCellDef="let element"> {{element.lastName}} </td>
+                        </ng-container>
+
+                        <!-- Weight Column -->
+                        <ng-container matColumnDef="email">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+                        <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+                        </ng-container>
+
+                        <!-- Symbol Column -->
+                        <ng-container matColumnDef="type">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Type </th>
+                        <td mat-cell *matCellDef="let element"> {{element.TypeStudent.name}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="isMainProvider">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header="isMainProvider"> is Main Provider </th>
+                            <td mat-cell *matCellDef="let element"><span style="visibility: hidden;">{{element.isMainProvider}}</span> <mat-slide-toggle [disabled]="element.isMainProvider" (change)="isMainProvider(element.id)" [checked]="element.isMainProvider"></mat-slide-toggle> </td>
+                        </ng-container>
+
+                        <!-- Symbol Column -->
+                        <ng-container matColumnDef="delete">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header="enable">  </th>
+                            <td mat-cell *matCellDef="let element"><span style="visibility: hidden;">{{element.enable}}</span> <mat-slide-toggle [disabled]="element.isMainProvider" (change)="deleteStudent(element.id)" [checked]="element.enable"></mat-slide-toggle> </td>
+                        </ng-container>
+
+                        <!-- Symbol Column -->
+                        <ng-container matColumnDef="update">
+                            <th mat-header-cell *matHeaderCellDef>  </th>
+                            <td mat-cell *matCellDef="let element"> <a [routerLink]="['/client/updatestudent', element.id]" ><mat-icon aria-hidden="false">settings</mat-icon></a>  </td>
+                        </ng-container>
+                        <!-- <ng-container matColumnDef="delete">
+                            <th mat-header-cell *matHeaderCellDef>  </th>
+                            <td mat-cell *matCellDef="let element"> <div class="deleteStudent" style="cursor: pointer;color: #a00; border-radius: 10px;" (click)="deleteStudent(element.id)"><mat-icon aria-hidden="false">delete</mat-icon></div>  </td>
+                        </ng-container> -->
+
+                        <!-- <div style="position: absolute; right: 5; top: 5; color: white; cursor: pointer;border-radius: 10px;background-color: #a00;" (click)="deleteClass(class.id)"><mat-icon>delete</mat-icon></div>
+                            -->
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+
+                    <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab label="Classes">
+          <table mat-table  [dataSource]="dataSourceClass " matSort matSortActive="startDate" matSortDirection="asc" style="width: 100%;">
+            <!-- Position Column -->
+            <ng-container matColumnDef="number">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> number </th>
+                <td mat-cell *matCellDef="let element"><a class="card-link icon-title"  [routerLink]="['/invoicepdf', element.id]" href="#">{{element.number}} </a> </td>
+            </ng-container>
+
+            <ng-container matColumnDef="startDate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> startDate </th>
+                <td mat-cell *matCellDef="let element"> {{element.startDate | date : 'MM/dd/yyyy'}} </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="TeachingMode">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> TeachingMode </th>
+            <td mat-cell *matCellDef="let element"> {{(element.TeachingMode != undefined ? element.TeachingMode.name : "")}} </td>
+            </ng-container>
+
+            <!-- Weight Column -->
+            <ng-container matColumnDef="totalCost">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> totalCost </th>
+            <td mat-cell *matCellDef="let element">$ {{element.totalCost}} </td>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="_mainCourseTitle">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> MainCourseTitle </th>
+            <td mat-cell *matCellDef="let element"> <span style="white-space: nowrap;
+              width: 10em;
+              overflow: hidden;
+              text-overflow: ellipsis;">{{element._mainCourseTitle.substr(0,30)}} </span> </td>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="nbrCourse">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> nbrCourse </th>
+            <td mat-cell *matCellDef="let element"> {{element.ClassesDetails.length}} </td>
+            </ng-container>
+
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsClass"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsClass;"></tr>
+          </table>
+
+          <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
+
+        </mat-tab>
+    </mat-tab-group>
+  </div>
+  <div class="col-2">
+    <div class="tab-content">
+      <div class="card">
+          <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+              <h2 id="client-billing-contact-tab" class="card-title">Actions</h2>
+          </div>
+          <p class="card-text">
+            <mat-icon _ngcontent-wox-c164="" role="img" class="mat-icon notranslate material-icons mat-icon-no-color" aria-hidden="true">edit</mat-icon>
+            <a class="card-link icon-title" [routerLink]="['/client', Client.id]" href="#">Edit</a>
+          </p>
+          <p class="card-text">
+            <mat-icon _ngcontent-wox-c164="" role="img" class="mat-icon notranslate material-icons mat-icon-no-color" aria-hidden="true">delete</mat-icon>
+            <a class="card-link icon-title text-danger" target="blank" >Cancel</a>
+          </p>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,38 @@
+<style>
+  mat-form-field.mat-form-field {
+    font-size: 16px;
+    width: 100%;
+  }
+</style>
+
+<h1 mat-dialog-title>Edit Picture </h1>
+
+<mat-dialog-content  class="mat-typography" [formGroup]="CommentForm">
+  <div class="row" style="margin: 10px 0px 24px 16px;">
+    <img  src="{{urlApi}}/{{data.Picture.imageName}}" alt="" style="height: 20rem;" >
+  </div>
+  <div class="row">
+    <mat-form-field>
+      <mat-label>Comments</mat-label>
+      <mat-select required formControlName="comment"  [value]="data.Picture.Comment.id">
+          <mat-option>
+              <ngx-mat-select-search placeholderLabel [formControl]="commentsFilterCtrl"></ngx-mat-select-search>
+          </mat-option>
+          <mat-option *ngFor="let item of filteredComments | async" [value]="item.id">
+              {{item.name}}
+          </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field class="example-full-width">
+      <mat-label>Note</mat-label>
+      <textarea formControlName="note" matInput >{{data.Picture.note}}</textarea>
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-raised-button color="primary" class="primary" (click)="Submit()">Submit</button>
+</mat-dialog-actions>
+

@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>Remove Client</h1>
+<div mat-dialog-content>
+  <p>Are you sure to remove this Client?</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button color="warn" mat-dialog-close cdkFocusInitial>Close</button>
+  <button  mat-raised-button color="primary" (click)="deleteClient(data)"  cdkFocusInitial>YES</button>
+</div>

@@ -1,0 +1,131 @@
+<style>
+    .new-student-container{
+        width: 80%;
+        margin: auto;
+        margin-top: 15px;
+        padding-bottom: 20px;
+    }
+    
+    mat-form-field.mat-form-field {
+        font-size: 18px;
+        width: 100%;
+    }
+    mat-checkbox{
+        line-height: 55px!important;
+        font-size: 18px!important;
+    }
+  
+</style>
+
+<div id="addNewProvider">
+    <nav class="navbar navbar-expand navbar-light bg-light" style="height:71.6px;">
+        <a class="navbar-brand" >Add New Student</a>
+        <span class="navbar__separator navbar__separator--v"></span>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item " >
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="new-student-container">
+        <form id="newProvider" [formGroup]="studentForm" (ngSubmit)="onAddProvider()">
+            <div class="row">
+                <div class="col-sm-5">
+                    <mat-form-field>
+                        <mat-label>Title Student</mat-label>
+                        <mat-select required formControlName="idTitleProvider" >
+                          <mat-option *ngFor="let item of TitleStudents" [value]="item.id">
+                            {{item.name}}
+                            <span class="additional-selection">
+                                {{item.description}}
+                            </span> 
+                          </mat-option>
+                          
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-2"></div>
+                <div class="col-sm-5">
+                    <mat-form-field>
+                        <mat-label>Type Student</mat-label>
+                        <mat-select required formControlName="idTypeProvider" >
+                          <mat-option *ngFor="let item of TypeStudents" [value]="item.id">
+                            {{item.name}}
+                            <span class="additional-selection">
+                                {{item.description}}
+                            </span> 
+                          </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>    
+            <div class="row">
+                <div class="col-md-4">
+                    <mat-form-field>
+                        <mat-label>First Name</mat-label>
+                        <input matInput required placeholder="Enter the first name of the Provider" formControlName="firstName" >
+                    </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                    <mat-form-field>
+                        <mat-label>Last Name</mat-label>
+                        <input matInput required placeholder="Enter the last name of the Provider" formControlName="lastName" >
+                    </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                    <mat-form-field>
+                        <mat-label>Suffix</mat-label>
+                        <input matInput placeholder="Enter the last name of the Provider" formControlName="lastName" >
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <mat-form-field>
+                        <mat-label>Email</mat-label>
+                        <input matInput placeholder="Enter the email of the Provider" formControlName="email" >
+                        <mat-error *ngIf="studentForm.get('email').invalid">{{getErrorMessage()}}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                    <mat-form-field>
+                        <mat-label>Phone number</mat-label>
+                        <input matInput appPhoneMask placeholder="Phone number" formControlName="phoneNumber"
+                        >
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-2" style="margin: auto;">
+                    <mat-checkbox formControlName="newsletter" >Newsletter</mat-checkbox>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3">
+                    <mat-form-field>
+                        <mat-label>State Board License</mat-label>
+                        <input matInput placeholder="Enter the State Board License of the Provider" formControlName="stateBoardLicense" >
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-3">
+                    <mat-form-field>
+                        <mat-label>DEA</mat-label>
+                        <input matInput placeholder="Enter the DEA the Provider" formControlName="dea" >
+                    </mat-form-field>
+                </div>
+                <div class="col-lg-3" style="margin: auto;">
+                    <mat-checkbox formControlName="isOSHACoordinator" style="font-size: 17px!important;">OSHA Coordinator</mat-checkbox>
+                </div>
+                <div class="col-lg-3" style="margin: auto;">
+                    <mat-checkbox formControlName="isPrivacySecurityOfficer" style="font-size: 17px!important;">Privacy/Security Officer</mat-checkbox>
+                </div>
+            </div>
+           
+            <button class="btn btn-success" [disabled]="studentForm.invalid"
+                type="submit">Submit
+            </button>
+        </form>
+    </div>
+</div>
+
+
+  

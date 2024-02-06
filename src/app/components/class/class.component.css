@@ -1,0 +1,8 @@
+
+  mat-form-field, .mat-form-field {
+    margin-left: 8px;
+
+  }
+  ::ng-deep .mdc-list-item__end {
+    display: none !important;
+}

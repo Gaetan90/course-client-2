@@ -1,0 +1,84 @@
+<style>
+    .address-container{
+        padding: 20px;;
+        padding-top: 15px;
+    }
+    .new-student-container{
+        padding: 20px;;
+        padding-top: 15px;
+    }
+    mat-form-field.mat-form-field {
+    font-size: 18px;
+    width: 100%;
+    }
+</style>
+
+
+
+<nav class="navbar navbar-expand navbar-light bg-light" style="height:71.6px;">
+    <a class="navbar-brand" href="#">Client Details</a>
+    <span class="navbar__separator navbar__separator--v"></span>
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav">
+            <li class="nav-item " >
+            </li>
+        </ul>
+        <ul class="nav navbar-nav row justify-content-end " style="width: 100%;">
+            <li class="nav-item col-sm-2"> 
+                <a mat-raised-button [routerLink]="['/client/addaddress', client.id]" routerLinkActive="active" href="#">New Address</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="mat-z12 " style="background-color: white;">
+    <div class="address-container">
+        <form class="new-address-form" [formGroup]="addressForm"  (ngSubmit)="onAddAddress()">
+            <div class="row">  
+                <mat-form-field>
+                    <mat-label>Street</mat-label>
+                    <input matInput required placeholder="Enter the street of the Client" formControlName="street">
+                </mat-form-field>
+            </div>
+            <div class="row">       
+                <mat-form-field>
+                    <mat-label>Street 2</mat-label>
+                    <input matInput placeholder="Enter the street complementary of the Client" formControlName="street2">
+                </mat-form-field>
+            </div>
+            <div class="row">
+                <div class="col-sm-5">
+                    <mat-form-field>
+                        <mat-label>City</mat-label>
+                        <input matInput required placeholder="Enter the city of the Client" formControlName="city">
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-3">
+                    <mat-form-field>
+                        <mat-label>Zip</mat-label>
+                        <input matInput required placeholder="Enter the zip of the Client" formControlName="zip">
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-4">
+                    <mat-form-field>
+                        <input type="text"
+                               matInput
+                               placeholder="States"
+                               formControlName="state"
+                               required
+                               [matAutocomplete]="autoGroup">
+                          <mat-autocomplete #autoGroup="matAutocomplete">
+                            <mat-optgroup *ngFor="let group of stateGroupOptions | async" [label]="group.letter">
+                              <mat-option *ngFor="let name of group.names" [value]="name">
+                                {{name}}
+                              </mat-option>
+                          </mat-optgroup>
+                        </mat-autocomplete>
+                      </mat-form-field>
+                </div>
+            </div>
+            <button class="btn btn-success" [disabled]="addressForm.invalid"
+                type="submit">Submit
+            </button>
+        </form>
+    </div>
+</div>

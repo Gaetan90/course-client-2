@@ -1,0 +1,65 @@
+
+<style>
+    .update-user-container{
+        margin: auto;
+        padding: 20px 20px 5px 20px;
+        background-color: white;
+    }
+    mat-form-field.mat-form-field {
+    font-size: 16px;
+    width: 100%;
+    }
+</style>
+
+<div class="update-user-container">
+    <form class="update-user-form" [formGroup]="UserForm" (ngSubmit)="onUpdateUser()">
+
+        <div class="row ">
+            <div class="col-sm-4">
+                <mat-form-field>
+                    <mat-label>First Name</mat-label>
+                    <input matInput required placeholder="Enter the First Name of the User" formControlName="firstName" >
+                </mat-form-field>
+            </div>
+            <div class="col-sm-4">
+                <mat-form-field>
+                    <mat-label>Last Name</mat-label>
+                    <input matInput required placeholder="Enter the Last Name of the User" formControlName="lastName" >
+                </mat-form-field>
+            </div>
+           
+            <div *ngIf="currentUser.isAdmin" class="col-md-2" style="margin:auto 20px; text-align: left;">
+                <mat-slide-toggle  formControlName="isAdmin">Adminstrator</mat-slide-toggle> 
+            </div>        
+            <div *ngIf="currentUser.isAdmin" class="col-md-1" style="margin: auto 12px; text-align:right;">
+                <a [routerLink]="['/settings/user', User.id]">Reset password</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <mat-form-field>
+                    <mat-label>Email</mat-label>
+                    <input matInput required placeholder="Enter the Email of the User" formControlName="email" >
+                    <mat-error *ngIf="UserForm.controls.email.invalid">Not a valid email</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-4">
+                <mat-form-field>
+                    <mat-label>User Name</mat-label>
+                    <input matInput required placeholder="Enter the User Name of the User" formControlName="userName" >
+                </mat-form-field>
+            </div>
+            <div class="col-md-1" style="margin:auto 20px; text-align: left;">
+                <mat-slide-toggle  formControlName="enable">Enable</mat-slide-toggle> 
+            </div>
+            <div class="col-sm-2" style="text-align: right;">
+                <button style="position: absolute;
+                    bottom: 14px;
+                    right: 16px;" class="btn btn-success" [disabled]="UserForm.invalid"
+                    type="submit">Update
+                </button>
+            </div>
+        </div>
+    </form>
+    <hr>
+</div>

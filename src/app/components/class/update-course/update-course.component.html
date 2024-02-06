@@ -1,0 +1,125 @@
+
+<style>
+    .update-class-container{
+        margin: auto;
+        padding: 20px 20px 5px 20px;
+        background-color: white;
+    }
+    mat-form-field.mat-form-field {
+    font-size: 16px;
+    width: 100%;
+    }
+</style>
+
+<div class="update-class-container">
+    <form class="update-class-form" [formGroup]="CourseForm" (ngSubmit)="onUpdateCourse()">
+        <div class="row">
+            <div class="col-sm-10">
+                <div class="row ">
+                    <div class="col-sm-6">
+                        <mat-form-field>
+                            <mat-label>Title</mat-label>
+                            <input matInput required placeholder="Enter the title of the Course" formControlName="title" >
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-3">
+                        <mat-form-field>
+                            <mat-label>Categories</mat-label>
+                            <mat-select required formControlName="idCourseCategorie" >
+                              <mat-option *ngFor="let item of CourseCategories" [value]="item.id">
+                                {{item.name}}
+                              </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-3">
+                        <mat-form-field>
+                            <mat-label>Charge By</mat-label>
+                            <mat-select required formControlName="idTypeStudent" >
+                              <mat-option *ngFor="let item of TypeStudents" [value]="item.id">
+                                {{item.name}}
+                              </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-5">
+                        <mat-form-field>
+                            <mat-label>Amount</mat-label>
+                            <mat-icon matSuffix>attach_money</mat-icon>
+                            <input matInput required type="number" placeholder="Enter the cost of the Course" formControlName="cost" >
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-5">
+                        <mat-form-field>
+                            <mat-label>Default Duration (in hours)</mat-label>
+                            <input matInput required type="number" value="0" placeholder="Enter the default duration of the Course" formControlName="duration" >
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <mat-checkbox formControlName="isReduction" >Reduction</mat-checkbox>
+                    </div>
+                    <div class="col-sm-2">
+                        <mat-checkbox formControlName="isCertificate" >Certificate</mat-checkbox>
+                    </div>
+                    <div class="col-sm-2">
+                        <mat-checkbox formControlName="isStudentCeu" >Student Ceu</mat-checkbox>
+                    </div>
+                    <div class="col-sm-2">
+                        <mat-checkbox formControlName="isStudentCard" >Student Card</mat-checkbox>
+                    </div>
+                    <div class="col-sm-2">
+                        <mat-checkbox formControlName="isRoster" >Roster</mat-checkbox>
+                    </div>
+                    <div class="col-sm-2">
+                        <mat-checkbox formControlName="isRosterCPR" >Roster CPR</mat-checkbox>
+                    </div>
+                </div>
+                <div class="row ">
+                    <div class="col-sm-4">
+                        <mat-form-field>
+                            <mat-label>Certification Title</mat-label>
+                            <input matInput placeholder="Enter the certification title of the Course" formControlName="titleCertificate" >
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-4">
+                        <mat-form-field>
+                            <mat-label>Authorised By</mat-label>
+                            <input matInput placeholder="Enter the certification authorised by of the Course" formControlName="authorisedBy" >
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-2">
+                        <mat-form-field>
+                            <mat-label>Number of CEUs</mat-label>
+                            <input matInput type="number" placeholder="Enter the number of CEUs of the Course" formControlName="authorisedCEUs" >
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-2">
+                        <mat-form-field>
+                            <mat-label>Student card expired (months)</mat-label>
+                            <input matInput type="number" placeholder="Enter the number of CEUs of the Course" formControlName="expiredMonth" >
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <mat-form-field >
+                            <mat-label>Description</mat-label>
+                            <textarea matInput placeholder="Enter a description of the Course" formControlName="description" ></textarea>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2" style="text-align: center;">
+                <mat-slide-toggle style="position: absolute; top: 0;" formControlName="enable"></mat-slide-toggle>
+                <button style="position: absolute; bottom: 0;" class="btn btn-success" [disabled]="CourseForm.invalid"
+                type="submit">Update
+            </button>
+            </div>
+        </div>
+    </form>
+    <hr>
+</div>

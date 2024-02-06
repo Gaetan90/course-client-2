@@ -1,0 +1,122 @@
+<style>
+    .navbar__separator.navbar__separator--v {
+        width: 1px;
+        height: 20px;
+    }
+    .navbar__separator {
+        display: block;
+        width: 12px;
+        height: 4px;
+        border-radius: 2px;
+        background: rgba(149,156,182,.5);
+        margin: 0 1.5rem 0 0;
+    }
+
+    hr{
+        margin:6px 0;
+    }
+    .list-clients, .list-classes{
+        width: 30%;
+        padding: 0px 10px 5px 10px;
+        display: inline-block;
+    }
+    .client-details, .classes-details{
+        width: 70%;
+        background-color: white;
+        display: inline-block;
+        padding: 5px;
+    }
+    .mat-h6{
+        font-size: calc(12px)!important
+    }
+
+mat-list-option[aria-selected="true"] {
+  border-left: #066472 8px solid !important;;
+}
+.mat-badge-content {
+  background-color: #066472;
+}
+mat-list-option[aria-selected="false"]{
+    padding-left: 8px;
+}
+::ng-deep .mat-list-text{
+    padding-left: 12px !important;
+    padding-right: 0px !important;
+}
+::ng-deep .mat-list-item{
+    height: 60px !important;
+}
+
+::ng-deep .mat-list-item-content{
+    padding: 0 !important;
+}
+::ng-deep .mat-badge-content {
+    top: 4px !important;
+    left: 0px !important;
+    width: 35px !important;
+    height: 35px !important;
+    line-height: 34px !important;
+    font-size: 20px !important;
+}
+::ng-deep .list-option-title{
+    padding-left: 45px !important;
+}
+::ng-deep .mat-list-base .mat-list-item .mat-list-item-content-reverse, .mat-list-base .mat-list-option .mat-list-item-content-reverse {
+    padding: 0 5px !important;
+}
+::ng-deep .mat-expansion-panel-body{
+    padding: 0 0px 16px!important;
+}
+
+</style>
+
+<div class="class-page">
+
+    <nav class="navbar navbar-expand navbar-light bg-light">
+        <a class="navbar-brand" href="#">Clients</a>
+        <span class="navbar__separator navbar__separator--v"></span>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item ">
+
+                </li>
+            </ul>
+
+            <ul class="nav navbar-nav row justify-content-end " style="width: 100%;">
+                <li class="nav-item col-sm-2">
+                    <a mat-raised-button routerLink="/client/newclient" routerLinkActive="active" color="accent" class="accent">New Client</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="row" style="height: 80%;">
+
+        <div class="list-clients" style="height: 100%;">
+            <div style="background-color: white; height: 100%;">
+                <mat-form-field class="example-full-width" appearance="fill" style="background-color: transparent;">
+                    <mat-label>Search</mat-label>
+                    <input matInput [(ngModel)]="client" placeholder="" value=""  ngChange=filterClient()>
+                </mat-form-field>
+                <mat-selection-list (click)="clientListSelected()" #clients2 [multiple]="false" style="height: 93%;
+                overflow: scroll;">
+                    <mat-list-option class="mat-primary" *ngFor="let client of client_list | sortDESC:'client.Classes.length' ; let i = index;" [value]="client" [selected]="i == 0">
+                        <span matBadge="{{client.name.charAt(0).toUpperCase()}}" matBadgeOverlap="false"></span>
+                        <span class="list-option-title">
+                            {{client.name}}
+                            <h6 class="mb-2 text-muted mat-h6 " >
+                              {{client.MainProvider.firstName}} {{client.MainProvider.lastName}}
+                              <span>&nbsp;</span> </h6>
+                        </span>
+                    </mat-list-option>
+                  </mat-selection-list>
+            </div>
+
+        </div>
+
+        <div class="client-details">
+            <app-client-details [Client]="clientSelected"></app-client-details>
+
+        </div>
+    </div>
+
+</div>

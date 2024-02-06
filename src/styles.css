@@ -1,0 +1,106 @@
+@import "../node_modules/angular-calendar/css/angular-calendar.css";
+@import "@angular/material/prebuilt-themes/indigo-pink.css";
+html, body { height: auto; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+@media print {
+    .print-button { display: none; }
+  }
+
+.navbar__separator.navbar__separator--v {
+    width: 1px;
+    height: 20px;
+}
+.navbar__separator {
+    display: block;
+    width: 12px;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(149,156,182,.5);
+    margin: 0 1.5rem 0 0;
+}
+.icon-title{
+    padding: 0px 0px 11px 10px;
+    vertical-align: middle;
+}
+
+.mat-form-field-appearance-legacy .mat-form-field-wrapper {
+
+    padding-bottom: 1em;
+
+}
+.cdk-overlay-container {
+    background-color: rgba(128, 128, 128, 0.5)!important;
+}
+.cdk-overlay-pane.owl-dt-popup{
+    top:20%!important;
+    left: 40%!important;
+}
+ngx-daterangepicker-material{
+    background-color: white;
+}
+.icon-title{
+    padding: 0px 0px 11px 10px;
+    vertical-align: middle;
+    position: relative;
+    top: -4px;
+}
+.card-text{
+    margin: 0 0 6px !important;
+}
+
+.row{
+    width: 100%;
+    margin-left: 0;
+}
+
+
+  .mat-select-panel {
+    max-height: 50vh !important;
+  }
+
+  hr{
+    }
+
+    .menu-navbar{
+        padding: 0;
+        height: 52px;
+        width: 100%;
+        position: fixed;
+        z-index: 100;
+    }
+
+    .menu-navbar .navbar-collapse, .menu-navbar .navbar-collapse ul{
+        height: 100%;
+    }
+    .menu-navbar .navbar-collapse li{
+        margin: auto;
+    }
+
+    .additional-selection {
+        opacity: 0.5;
+        font-size: 12px;
+        padding: 0 5px;
+    }
+
+    .mat-flat-button.mat-primary, .mat-raised-button.mat-primary, .mat-fab.mat-primary, .mat-mini-fab.mat-primary, .btn-primary, .mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-ba{
+      background-color: #066472 !important;
+      border-color: #066472 !important;
+    }
+    .mat-flat-button.mat-accent, .mat-raised-button.mat-accent, .mat-fab.mat-accent, .mat-mini-fab.mat-accent, .btn-secondary{
+      background-color: #64b4af !important;
+      border-color: #64b4af !important;
+    }
+
+    .mat-mdc-form-field{
+        width: 100%;
+    }
+
+
+  mat-form-field, .mat-form-field {
+    margin-left: 8px;
+
+  }
+  ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
+    background-color: transparent !important;
+}

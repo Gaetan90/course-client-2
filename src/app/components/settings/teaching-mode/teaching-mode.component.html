@@ -1,0 +1,47 @@
+<style>
+    .navbar__separator.navbar__separator--v {
+        width: 1px;
+        height: 20px;
+    }
+    .navbar__separator {
+        display: block;
+        width: 12px;
+        height: 4px;
+        border-radius: 2px;
+        background: rgba(149,156,182,.5);
+        margin: 0 1.5rem 0 0;
+    }
+</style>
+
+<nav class="navbar navbar-expand navbar-light bg-light">
+    <a class="navbar-brand" href="#">Teaching Modes</a>
+    <span class="navbar__separator navbar__separator--v"></span>
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav">
+            <li class="nav-item ">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Search</mat-label>
+                    <input matInput [(ngModel)]="TeachingMode_filter" placeholder="" value="" >
+                </mat-form-field>
+            </li>
+        </ul>
+        
+    </div>
+</nav>
+<div *ngFor="let TeachingMode of TeachingModes | sortDESC:'enable'">
+    <app-update-teaching-mode  [TeachingMode]="TeachingMode"></app-update-teaching-mode  >
+</div>
+<nav  id="add-course-category" class="navbar navbar-expand navbar-light bg-light" style="height:71.6px;">
+    <a class="navbar-brand" href="#">Add Teaching Mode</a>
+    <span class="navbar__separator navbar__separator--v"></span>
+    <div class="collapse navbar-collapse">    
+        <ul class="navbar-nav">
+            <li class="nav-item ">
+            </li>
+        </ul>    
+    </div>
+</nav>
+<div>
+    <app-add-teaching-mode></app-add-teaching-mode>
+
+</div>

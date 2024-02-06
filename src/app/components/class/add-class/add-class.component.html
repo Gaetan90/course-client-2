@@ -1,0 +1,322 @@
+<style>
+    .new-class-container{
+        margin: auto;
+        margin-bottom:  15px;
+        padding: 20px;;
+        background-color: white;
+    }
+    mat-form-field.mat-form-field {
+    font-size: 18px;
+    width: 100%;
+    }
+
+    mat-checkbox{
+        line-height: 55px!important;
+        font-size: 18px!important;
+    }
+    footer{
+        height: 1000px!important;
+    }
+    .class-message{
+        position: fixed;
+        top: 40px;
+        right: 10px;
+        min-width: 425px;
+        padding: 11px;
+        z-index: 2000;
+        border-radius: 5px;
+    }
+</style>
+
+<div *ngFor="let lastClass of lastClasses ; let i=index">
+    <div *ngIf="lastClass != null"  class="class-message mat-snack-bar-container" [ngStyle]="{'top':40*(i+1)+ 'px'}">
+        The last class for the Course #{{i+1}} is the {{lastClass.startDate | date:'shortDate' }}  -  <a [routerLink]="['/invoicepdf', lastClass.id]" target="_blanket">Invoice</a><button (click)="lastClasses[i] = null" mat-button color="accent" style="position: absolute; right: 2px; top: 3px;">Closed</button>
+    </div>
+</div>
+
+
+<nav class="navbar navbar-expand navbar-light bg-light" style="height:71.6px;">
+    <a class="navbar-brand" >Add New Class</a>
+    <span class="navbar__separator navbar__separator--v"></span>
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav">
+            <li class="nav-item " >
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="new-class-container">
+    <form class="new-class-form" [formGroup]="ClassForm" (ngSubmit)="onAddClass()">
+        <div class="row">
+            <div class="col-sm-4">
+                <mat-form-field>
+                    <mat-label>Teaching Mode</mat-label>
+                    <mat-select required formControlName="idTeachingMode" >
+                      <mat-option *ngFor="let item of TeachingModes" [value]="item.id">
+                        {{item.name}}
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <mat-form-field>
+                    <mat-label>Client</mat-label>
+                    <mat-select required formControlName="idClient" (selectionChange)="clientSelected($event.value)">
+                        <mat-option>
+                            <ngx-mat-select-search placeholderLabel [formControl]="clientsFilterCtrl"></ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option *ngFor="let item of filteredClients | async" [value]="item.id">
+                            {{item.name}} - {{item.MainProvider.firstName}} {{item.MainProvider.lastName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <mat-form-field>
+                    <mat-label>Location</mat-label>
+                    <mat-select required formControlName="idAddress" (selectionChange)="addressSelected($event.value)">
+                        <mat-option *ngFor="let item of ClientAddresses" [value]="item.id">
+                            {{item.address1}} {{item.address2}}, {{item.city}} {{item.zip}} {{item.state}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <mat-form-field>
+                    <mat-label>Street</mat-label>
+                    <input matInput required placeholder="Enter the street of the Class Place" formControlName="street">
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <mat-form-field>
+                    <mat-label>Street 2</mat-label>
+                    <input matInput placeholder="Enter the street complementary of the Class Place" formControlName="street2">
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <mat-form-field>
+                    <mat-label>City</mat-label>
+                    <input matInput required placeholder="Enter the city of the Class Place" formControlName="city">
+                </mat-form-field>
+            </div>
+            <div class="col-sm-2">
+                <mat-form-field>
+                    <mat-label>Zip Code</mat-label>
+                    <input matInput  maxlength="5" required placeholder="Enter the zip code of the Class Place" formControlName="zip">
+                </mat-form-field>
+            </div>
+            <div class="col-sm-4">
+                <mat-form-field>
+                    <input type="text"
+                           matInput
+                           placeholder="States"
+                           formControlName="state"
+                           required
+                           [matAutocomplete]="autoGroup">
+                      <mat-autocomplete #autoGroup="matAutocomplete">
+                        <mat-optgroup *ngFor="let group of stateGroupOptions | async" [label]="group.letter">
+                          <mat-option *ngFor="let name of group.names" [value]="name">
+                            {{name}}
+                          </mat-option>
+                      </mat-optgroup>
+                    </mat-autocomplete>
+                  </mat-form-field>
+            </div>
+            <div class="col-md-2">
+                <mat-form-field>
+                    <mat-label>Phone Number</mat-label>
+                    <input matInput appPhoneMask placeholder="Phone number" formControlName="phoneNumber"
+                   >
+
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <mat-form-field>
+                    <mat-label>Emergency Contact</mat-label>
+                    <input matInput placeholder="Enter the city of the Class Place" formControlName="emergencyContact">
+                </mat-form-field>
+            </div>
+            <div class="col-sm-4">
+                <mat-form-field>
+                    <mat-label>Emergency Phone Number</mat-label>
+                    <input appPhoneMask matInput placeholder="Phone number" formControlName="emergencyPhone"
+                  >
+
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <mat-form-field>
+                    <mat-label>Miles Travel</mat-label>
+                    <input matInput placeholder="Enter the city of the Class Place" formControlName="milesTravel">
+                </mat-form-field>
+            </div>
+            <div class="col-sm-4">
+                <mat-form-field>
+                    <mat-label>Time Travel (hours)</mat-label>
+                    <input matInput  placeholder="Enter the zip code of the Class Place" formControlName="timeTravel">
+                </mat-form-field>
+            </div>
+            <div class="col-sm-4">
+                <mat-form-field>
+                    <mat-label>Mile Amount</mat-label>
+                    <input matInput  placeholder="Enter the mile amount of the Class" formControlName="mileAmount">
+                </mat-form-field>
+            </div>
+        </div>
+        <div *ngFor="let control of formData.controls; let i=index">
+            <hr>
+            <h3>Course #{{i+1}}</h3>
+            <div [formGroup]="control">
+                <div class="row">
+                    <div class="col-sm-9">
+                        <mat-form-field>
+                            <mat-label>Course</mat-label>
+                            <mat-select required formControlName="idCourse" (selectionChange)="courseSelected($event.value, i)">
+                                <mat-option>
+                                    <ngx-mat-select-search placeholderLabel="Search" [formControl]="coursesFilterCtrl"></ngx-mat-select-search>
+                                </mat-option>
+                                <mat-option *ngFor="let item of filteredCourses | async" [value]="item.id">
+                                    {{item.title}} - {{item.description}} ({{item.TypeStudent.name}})
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <mat-form-field>
+                            <mat-label>Cost</mat-label>
+                            <mat-icon matSuffix>attach_money</mat-icon>
+                            <input matInput type="number" placeholder="Enter the Cost of the Course" formControlName="cost">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-3">
+                        <mat-form-field>
+                            <mat-label>Start Date</mat-label>
+                            <input matInput required  [owlDateTime]="startDatePicker" [owlDateTimeTrigger]="startDatePicker"  (ngModelChange)="startDateChange(i)" placeholder="Date Time" formControlName="startDate">
+                            <owl-date-time #startDatePicker [hour12Timer]="true" ></owl-date-time>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-3">
+                        <mat-form-field>
+                            <mat-label>End Date</mat-label>
+                            <input matInput required [owlDateTime]="endDatePicker" [owlDateTimeTrigger]="endDatePicker" formControlName="endDate">
+                            <owl-date-time  #endDatePicker [hour12Timer]="true"></owl-date-time>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-3">
+                      <mat-form-field>
+                          <mat-label>Order</mat-label>
+                          <input matInput type="number" placeholder="Enter the Invoice Order" formControlName="order">
+                      </mat-form-field>
+                  </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <mat-form-field>
+                            <mat-label>Student</mat-label>
+                            <mat-select required formControlName="idStudents" multiple>
+                                <mat-option>
+                                    <ngx-mat-select-search placeholderLabel [formControl]="studentsFilterCtrl[i]"></ngx-mat-select-search>
+                                </mat-option>
+                                <mat-option *ngFor="let item of filteredStudents[i] | async" [value]="item.id">
+                                    {{item.firstName}} {{item.lastName}}
+
+                                    <span class="additional-selection">
+                                        - {{item.TypeStudent.name}}
+                                    </span>
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+
+                <button style="margin-bottom:5px ;" (click)="removeCourse(i)" class="btn btn-primary mr-5">Remove</button>
+            </div>
+        </div>
+        <button [disabled]="ClassForm.invalid" (click)="addCourse(coursesIndex)" class="btn btn-primary mr-5">Add Course</button>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <mat-form-field >
+                    <mat-label>Note</mat-label>
+                    <textarea matInput placeholder="Enter a note of the Class" formControlName="note" ></textarea>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <!-- <div class="row">
+            <div class="col-md-4">
+                <mat-form-field>
+                    <mat-label>Email</mat-label>
+                    <input matInput placeholder="Enter the email of the Client" formControlName="email" >
+                    <mat-error *ngIf="clientForm.get('email').invalid">{{getErrorMessage()}}</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-4">
+                <mat-form-field>
+                    <mat-label>Email 2</mat-label>
+                    <input matInput placeholder="Enter the email2 of the Client" formControlName="email2" >
+                    <mat-error *ngIf="clientForm.get('email2').invalid">{{getErrorMessage()}}</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-2">
+                <mat-form-field>
+                    <mat-label>Phone number</mat-label>
+                    <input matInput placeholder="Phone number" formControlName="phoneNumber"
+                    maxlength="10">
+                    <mat-error *ngIf="clientForm.get('phoneNumber').hasError('required')">
+                        Phone number is <strong>required</strong>
+                    </mat-error>
+                    <mat-error *ngIf="!clientForm.get('phoneNumber').hasError('required') &&clientForm.get('phoneNumber').hasError('pattern')">
+                    Please enter valid mumber
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-2">
+                <mat-form-field>
+                    <mat-label>Fax number</mat-label>
+                    <input matInput placeholder="Fax number" formControlName="fax"
+                    maxlength="10">
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-5">
+                <mat-form-field>
+                    <mat-label>Web Site</mat-label>
+                    <input matInput placeholder="Enter the web site of the Client" formControlName="website">
+                </mat-form-field>
+            </div>
+            <div class="col-sm-5">
+                <mat-form-field>
+                    <mat-label>Contact Name</mat-label>
+                    <input matInput placeholder="Enter the contact name of the Client" formControlName="contact">
+                </mat-form-field>
+            </div>
+            <div class="col-sm-2">
+                <mat-checkbox formControlName="newsletter" >Newsletter</mat-checkbox>
+            </div>
+        </div> -->
+        <button class="btn btn-success" [disabled]="ClassForm.invalid"
+            type="submit">Submit
+        </button>
+    </form>
+</div>
+

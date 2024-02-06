@@ -1,0 +1,76 @@
+
+<style>
+    .add-user-container{
+        margin: auto;
+        padding: 20px 20px 5px 20px;
+        background-color: white;
+    }
+    mat-form-field.mat-form-field {
+    font-size: 16px;
+    width: 100%;
+    }
+</style>
+
+<div class="add-user-container">
+    <form class="add-user-form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+        <div class="row ">
+            <div class="col-sm-5">
+                <mat-form-field>
+                    <mat-label>First Name</mat-label>
+                    <input matInput required placeholder="Enter the First Name of the User" formControlName="firstName" >
+                </mat-form-field>
+            </div>
+            <div class="col-sm-5">
+                <mat-form-field>
+                    <mat-label>Last Name</mat-label>
+                    <input matInput required placeholder="Enter the Last Name of the User" formControlName="lastName" >
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-5">
+                <mat-form-field>
+                    <mat-label>Email</mat-label>
+                    <input matInput required type="email" placeholder="Enter the Email of the User" formControlName="email" readonly 
+                    onfocus="this.removeAttribute('readonly');">
+                </mat-form-field>
+            </div>
+            <div class="col-sm-5">
+                <mat-form-field>
+                    <mat-label>User Name</mat-label>
+                    <input matInput required type="text" placeholder="Enter the Email of the User" formControlName="userName" readonly 
+                    onfocus="this.removeAttribute('readonly');">
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-5">
+                <mat-form-field>
+                    <mat-label>Password</mat-label>
+                    <input matInput required [type]="hide ? 'password' : 'text'" placeholder="Enter the Password of User" formControlName="password" readonly 
+                    onfocus="this.removeAttribute('readonly');">
+                    <mat-icon style="    cursor: pointer;" matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-5">
+                <mat-form-field>
+                    <mat-label>Confirm Password</mat-label>
+                    <input matInput required [type]="hideConfirm ? 'password' : 'text'" placeholder="Confirm the Password of the User" formControlName="confirmPassword" readonly 
+                    onfocus="this.removeAttribute('readonly');">
+                    <mat-icon style="    cursor: pointer;" matSuffix (click)="hideConfirm = !hideConfirm">{{hideConfirm ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    
+                </mat-form-field>
+            </div>
+        </div>
+            
+        <div class="row">
+            <div class="col-sm-1" style="text-align: center;">
+                <button class="btn btn-success" 
+                    type="submit">Add
+                </button>
+            </div>
+        </div>    
+    </form>
+    <hr>
+</div>

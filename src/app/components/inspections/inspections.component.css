@@ -1,0 +1,16 @@
+.progress-loader {
+
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.32);
+  vertical-align: top;
+  margin: auto;
+  top: 0;
+}
+
+.progress-loader mat-progress-spinner{
+  top:33%;
+  margin: auto;
+}

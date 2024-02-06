@@ -1,0 +1,29 @@
+table{
+    width: 100%;
+}
+
+#app-container{
+    max-width: 1520px;
+    margin: auto;
+    padding-top: 0;
+    
+  }
+
+.navbar__separator.navbar__separator--v {
+    width: 1px;
+    height: 20px;
+}
+.navbar__separator {
+    display: block;
+    width: 12px;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(149,156,182,.5);
+    margin: 0 1.5rem 0 0;
+}
+
+.client-detail{
+    padding: 15px;
+    background-color: white;
+    margin: 0;
+}

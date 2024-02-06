@@ -1,0 +1,298 @@
+<style>
+    .navbar__separator.navbar__separator--v {
+        width: 1px;
+        height: 20px;
+    }
+    .navbar__separator {
+        display: block;
+        width: 12px;
+        height: 4px;
+        border-radius: 2px;
+        background: rgba(149,156,182,.5);
+        margin: 0 1.5rem 0 0;
+    }
+    .icon-title{
+        padding: 0px 0px 11px 10px;
+        vertical-align: middle;
+    }
+    .list-clients, .list-classes{
+        width: 35%;
+        padding: 0px 10px 5px 10px;
+        display: inline-block;
+    }
+    .client-details, .classes-details{
+        width: 65%;
+        background-color: white;
+        display: inline-block;
+        padding: 5px;
+    }
+
+mat-list-option[aria-selected="true"] {
+    border-left: #066472 8px solid !important;;
+}
+.mat-badge-content {
+    background-color: #066472;
+}
+mat-list-option[aria-selected="false"]{
+    padding-left: 8px;
+}
+::ng-deep .mat-list-text{
+    padding-left: 12px !important;
+    padding-right: 0px !important;
+}
+::ng-deep .mat-list-item{
+    height: 60px !important;
+}
+
+::ng-deep .mat-list-item-content{
+    padding: 0 !important;
+}
+::ng-deep .mat-badge-content {
+    top: 4px !important;
+    left: 0px !important;
+    width: 35px !important;
+    height: 35px !important;
+    line-height: 34px !important;
+    font-size: 20px !important;
+}
+.list-option-title{
+    padding-left: 45px !important;
+    font-size: 15px !important;
+}
+::ng-deep .mat-list-base .mat-list-item .mat-list-item-content-reverse, .mat-list-base .mat-list-option .mat-list-item-content-reverse {
+    padding: 0 5px !important;
+}
+::ng-deep .mat-expansion-panel-body{
+    padding: 0 0px 16px!important;
+}
+::ng-deep .mat-mdc-tab-label-container {
+  display: none!important;
+}
+
+::ng-deep .cal-week-view .cal-event {
+    color: #000!important;
+}
+
+.tab-content{
+  width: 100%;
+}
+</style>
+
+
+<nav class="navbar navbar-inverse navbar-expand navbar-light bg-light" style="height:71.6px;">
+    <a class="navbar-brand" href="#">Classes</a>
+    <span class="navbar__separator navbar__separator--v"></span>
+    <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav row justify-content-end " style="width: 100%;">
+            <li class="nav-item col-sm-2">
+                <a style="cursor: pointer" (click)="exportexcel()">
+                    <mat-icon> cloud_download</mat-icon>
+                  </a>
+            </li>
+            <li class="nav-item col-sm-2">
+                <a mat-raised-button routerLink="/class/newclass" routerLinkActive="active" color="accent" class="accent" href="#">New Class</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="row" style="height: 85%;">
+
+    <div class="list-clients" style="height: 100%;">
+        <div style="background-color: white; height: 100%;">
+          <mat-form-field class="example-full-width"  appearance="fill" >
+            <mat-label>Search</mat-label>
+            <input matInput [(ngModel)]="Class_filter" placeholder="" value="" >
+          </mat-form-field>
+          <!-- <mat-form-field class="example-full-width"  appearance="fill" >
+            <input matInput placeholder="Date Range"
+                [(ngModel)]="DateRange"
+                [selectMode]="'range'"
+                [owlDateTimeTrigger]="dtRange1" [owlDateTime]="dtRange1">
+            <owl-date-time [pickerType]="'calendar'" #dtRange1></owl-date-time>
+          </mat-form-field> -->
+          <mat-form-field class="example-full-width"  appearance="fill" >
+            <mat-label>Courses</mat-label>
+            <mat-select  [(ngModel)]="Courses_filter" multiple>
+                <mat-option>
+                    <ngx-mat-select-search placeholderLabel [formControl]="coursesFilterCtrl"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let item of filteredCourses | async" [value]="item.id">
+                    {{item.title}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+          <mat-selection-list #clients2 [multiple]="false" style="height: 93%;
+          overflow-y: scroll;">
+              <mat-list-option class="mat-primary" *ngFor="let class of Classes | sortByDate:'startDate' ; let i = index;" [value]="class" [selected]="i == 0">
+                  <span matBadge="{{class.client.name.charAt(0).toUpperCase()}}" matBadgeOverlap="false"></span>
+                  <div class="list-option-title">
+                      {{class.number}} - {{class.client.name}} <span style="position: absolute; right: 10px;"><button mat-button (click)="classDetails(class.id)">Details</button></span>
+                      <h6 class="mb-2 text-muted mat-h7 ">{{class.startDate | date: "MM/dd/yyyy hh:mm a"}} - {{class.endDate | date: "MM/dd/yyyy hh:mm a"}}<span>&nbsp;</span> </h6>
+                  </div>
+              </mat-list-option>
+            </mat-selection-list>
+        </div>
+
+    </div>
+    <mat-tab-group [(selectedIndex)]="selectedTab" class="classes-details header-less-tabs">
+        <mat-tab>
+            <div >
+                <div class="row text-center">
+                    <div class="col-md-4">
+                      <div class="btn-group">
+                        <div
+                          class="btn btn-primary"
+                          mwlCalendarPreviousView
+                          [view]="view"
+                          [(viewDate)]="viewDate"
+                          (viewDateChange)="closeOpenMonthViewDay()"
+                        >
+                          Previous
+                        </div>
+                        <div
+                          class="btn btn-outline-secondary"
+                          mwlCalendarToday
+                          [(viewDate)]="viewDate"
+                        >
+                          Today
+                        </div>
+                        <div
+                          class="btn btn-primary"
+                          mwlCalendarNextView
+                          [view]="view"
+                          [(viewDate)]="viewDate"
+                          (viewDateChange)="closeOpenMonthViewDay()"
+                        >
+                          Next
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <mwl-calendar-week-view
+                            [viewDate]="viewDate"
+                            [refresh]="refresh"
+                            [events]="events"
+                            [weekStartsOn]="weekStartsOn"
+                            [hourSegments]="2"
+                            [dayStartHour]="5"
+                            [dayEndHour]="20"
+                            [hourSegmentHeight]="20"
+                            (eventClicked)="eventClicked($event)"
+                            >
+                        </mwl-calendar-week-view>
+                    </div>
+                </div>
+
+            </div>
+        </mat-tab>
+        <mat-tab>
+            <div class="row">
+              <div class="col-1" style="text-align: center;max-width: 5%;">
+                <button color="accent" mat-mini-fab (click)="selectedTab=0" aria-label="Example icon button with a vertical three dot icon">
+                    <mat-icon  aria-hidden="false" aria-label="Example home icon">arrow_back_circle</mat-icon>
+                  </button>
+              </div>
+              <div class="col-11">
+                <div *ngIf="classSelected.number != null">
+                    <h1 style="margin: 0 0 3px;" >{{classSelected.number}} - ${{classSelected.totalCost}} / {{classSelected._mainCourseTitle}}</h1>
+                    <h6 class="mb-2 text-muted mat-h7 ">{{classSelected.startDate | date: "MM/dd/yyyy hh:mm a"}} - {{classSelected.endDate | date: "MM/dd/yyyy hh:mm a"}}<span>&nbsp;</span> </h6>
+                    <div class="row">
+                      <div class="col-md-8">
+                        <div class="row ">
+                          <div class="tab-content">
+                            <div class="card">
+                              <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h2 id="client-billing-contact-tab" class="card-title">Address </h2>
+                                </div>
+                                    <p class="card-text">
+                                        <mat-icon aria-hidden="false" aria-label="Example home icon">near_me</mat-icon>
+                                        <span class="icon-title">{{classSelected.address1}}</span>
+                                        <br/>
+                                        <span class="icon-title" style="padding-left: 35px;">{{classSelected.city}}, {{classSelected.state}} {{classSelected.zip}}</span>
+                                    </p>
+                                    <p class="card-text">  <mat-icon aria-hidden="false" aria-label="Example home icon">contacts</mat-icon> <span class="icon-title">{{classSelected.emergencyContact}}</span></p>
+                                    <p class="card-text">  <mat-icon aria-hidden="false" aria-label="Example home icon">phone</mat-icon> <span class="icon-title">{{classSelected.emergencyPhone}}</span></p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="tab-content pt-4">
+                            <div class="card">
+                                <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h2 id="client-billing-contact-tab" class="card-title">Courses </h2>
+                                </div>
+                                <ul style="margin-bottom: .4rem;">
+                                    <span *ngFor="let ClassesDetail of classSelected.ClassesDetails  | sortASC:'startDate'">
+                                      <h6 style="margin: 0;">{{ClassesDetail.startDate | date: "MM/dd/yyyy hh:mm"}} - {{ClassesDetail.endDate | date: "MM/dd/yyyy hh:mm"}}</h6>
+                                      <li >
+                                          {{ClassesDetail.Course.title}} - ${{ClassesDetail.cost}} - {{ClassesDetail.Students.length}} Students
+                                      </li>
+                                    </span>
+                                  </ul>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-4">
+                        <div class="tab-content">
+                          <div class="card">
+                              <div class="card-body">
+                              <div class="d-flex justify-content-between align-items-center">
+                                  <h2 id="client-billing-contact-tab" class="card-title">Actions</h2>
+                              </div>
+                              <p class="card-text">
+                                <mat-icon _ngcontent-wox-c164="" role="img" class="mat-icon notranslate material-icons mat-icon-no-color" aria-hidden="true">edit</mat-icon>
+                                <a class="card-link icon-title" [routerLink]="['/class', classSelected.id]" href="#">Edit</a>
+                              </p>
+                              <p class="card-text">
+                                <mat-icon _ngcontent-wox-c164="" role="img" class="mat-icon notranslate material-icons mat-icon-no-color" aria-hidden="true">insert_drive_file</mat-icon>
+                                <a class="card-link icon-title"  [routerLink]="['/invoicepdf', classSelected.id]" href="#">Invoice</a>
+                              </p>
+                              <p class="card-text">
+                                <mat-icon _ngcontent-wox-c164="" role="img" class="mat-icon notranslate material-icons mat-icon-no-color" aria-hidden="true">delete</mat-icon>
+                                <a class="card-link icon-title text-danger" target="blank" (click)="deleteClass(classSelected.id)">Cancel</a>
+                              </p>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+
+
+</div>
+<div id="content2" #content2>
+<table style="display: none;" id="excel-table">
+    <thead>
+        <tr >
+            <th>Client</th>
+            <th>StartDate</th>
+            <th>EndDate</th>
+            <th>Location</th>
+            <th>Courses</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let class of Classes | sortDESC:'startDate'" >
+            <td>{{class.client.name}}</td>
+            <td>{{class.startDate | date: "MM/dd/yyyy hh:mm a"}}</td>
+            <td>{{class.endDate | date: "MM/dd/yyyy hh:mm a"}}</td>
+            <td>{{class.address1}} {{class.city}}, {{class.state}} {{class.zip}}</td>
+            <td *ngFor="let cd of class.ClassesDetails"> {{cd.Course.title}}</td>
+        </tr>
+    </tbody>
+</table>
+</div>

@@ -1,0 +1,10 @@
+<div class="progress-loader" [hidden]="!loading">
+
+    <mat-progress-spinner [mode]="'indeterminate'">
+    </mat-progress-spinner>
+    <div *ngIf="message" style="text-align: center; width: 50%;  position: relative; top:40%; margin: auto;">
+      <p style="padding:5px; background-color: white; border-radius: 10px;">{{message}}</p>
+    </div>
+
+
+</div>

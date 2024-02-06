@@ -1,0 +1,52 @@
+<style>
+    .navbar__separator.navbar__separator--v {
+        width: 1px;
+        height: 20px;
+    }
+    .navbar__separator {
+        display: block;
+        width: 12px;
+        height: 4px;
+        border-radius: 2px;
+        background: rgba(149,156,182,.5);
+        margin: 0 1.5rem 0 0;
+    }
+</style>
+
+<nav class="navbar navbar-expand navbar-light bg-light">
+    <a class="navbar-brand" href="#">Student Types</a>
+    <span class="navbar__separator navbar__separator--v"></span>
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav">
+            <li class="nav-item ">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Search</mat-label>
+                    <input matInput [(ngModel)]="TypeStudent_filter" placeholder="" value="" >
+                </mat-form-field>
+            </li>
+        </ul>
+        <ul class="nav navbar-nav row justify-content-end " style="width: 100%;">
+            <li class="nav-item col-sm-3"> 
+                <a mat-raised-button href="#add-student-type" >New Student Type</a>
+            </li> 
+        </ul>
+        
+    </div>
+</nav>
+<div *ngFor="let TypeStudent of TypeStudents | sortDESC:'enable'">
+    <app-update-student-type  [TypeStudent]="TypeStudent"></app-update-student-type >
+</div>
+<nav  id="add-student-type" class="navbar navbar-expand navbar-light bg-light" style="height:71.6px;">
+    <a class="navbar-brand" href="#">Add Student Type</a>
+    <span class="navbar__separator navbar__separator--v"></span>
+    <div class="collapse navbar-collapse">    
+        <ul class="navbar-nav">
+            <li class="nav-item ">
+            </li>
+        </ul>    
+    </div>
+</nav>
+<div>
+    <app-add-student-type></app-add-student-type >
+
+</div>

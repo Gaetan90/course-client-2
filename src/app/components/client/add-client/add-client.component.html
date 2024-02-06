@@ -1,0 +1,275 @@
+<style>
+    .new-client-container{
+        margin: auto;
+        margin-bottom:  15px;
+        padding: 20px;;
+        background-color: white;
+    }
+    mat-form-field.mat-form-field {
+    font-size: 18px;
+    width: 100%;
+    }
+
+    mat-checkbox{
+        line-height: 55px!important;
+        font-size: 18px!important;
+    }
+
+</style>
+
+<nav class="navbar navbar-expand navbar-light bg-light" style="height:71.6px;">
+    <a class="navbar-brand" >Add New Client</a>
+    <span class="navbar__separator navbar__separator--v"></span>
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav">
+            <li class="nav-item " >
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="new-client-container">
+    <form class="new-client-form" [formGroup]="clientForm" (ngSubmit)="onAddClient()">
+        <div class="row">
+            <div class="col-5">
+                <mat-form-field>
+                    <mat-label>Practice Type</mat-label>
+                    <mat-select required formControlName="idTypeClient" >
+                        <mat-option>
+                            <ngx-mat-select-search [formControl]="TypeClientsFilterCtrl"></ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option *ngFor="let item of filteredTypeClients | async" [value]="item.id">
+                            {{item.name}}
+                            <span class="additional-selection">
+                                {{item.description}}
+                            </span> 
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-7">
+                <mat-form-field>
+                    <mat-label>Pratice Name</mat-label>
+                    <input matInput required placeholder="Enter the name of the Client" formControlName="name" >
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <mat-form-field >
+                    <mat-label>Description</mat-label>
+                    <textarea matInput placeholder="Enter a description of the Client" formControlName="description" ></textarea>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">  
+            <div class="col-12">
+                <mat-form-field>
+                    <mat-label>Street</mat-label>
+                    <input matInput required placeholder="Enter the street of the Client" formControlName="street">
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">      
+            <div class="col-12">
+                <mat-form-field>
+                    <mat-label>Street 2</mat-label>
+                    <input matInput placeholder="Enter the street complementary of the Client" formControlName="street2">
+                </mat-form-field>
+            </div> 
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <mat-form-field>
+                    <mat-label>City</mat-label>
+                    <input matInput required placeholder="Enter the city of the Client" formControlName="city">
+                </mat-form-field>
+            </div>
+            <div class="col-sm-3">
+                <mat-form-field>
+                    <mat-label>Zip Code</mat-label>
+                    <input matInput required  maxlength="5" required placeholder="Enter the zip code of the City" formControlName="zip">
+                </mat-form-field>
+            </div>
+            <div class="col-sm-4">
+                <mat-form-field>
+                    <input type="text"
+                           matInput
+                           placeholder="States"
+                           formControlName="state"
+                           required
+                           [matAutocomplete]="autoGroup">
+                      <mat-autocomplete #autoGroup="matAutocomplete">
+                        <mat-optgroup *ngFor="let group of stateGroupOptions | async" [label]="group.letter">
+                          <mat-option *ngFor="let name of group.names" [value]="name">
+                            {{name}}
+                          </mat-option>
+                      </mat-optgroup>
+                    </mat-autocomplete>
+                  </mat-form-field>
+            </div>
+            
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <mat-form-field>
+                    <mat-label>Web Site</mat-label>
+                    <input matInput placeholder="Enter the web site of the Client" formControlName="website">
+                </mat-form-field>
+            </div>
+            <div class="col-md-3">
+                <mat-form-field>
+                    <mat-label>Email</mat-label>
+                    <input matInput placeholder="Enter the email of the Client" formControlName="email" >
+                    <mat-error *ngIf="clientForm.get('email').invalid">{{getErrorMessage()}}</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-3">
+                <mat-form-field>
+                    <mat-label>Email 2</mat-label>
+                    <input matInput placeholder="Enter the email2 of the Client" formControlName="email2" >
+                    <mat-error *ngIf="clientForm.get('email2').invalid">{{getErrorMessage()}}</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-2">
+                <mat-form-field>
+                    <mat-label>Default Travel Miles Amount</mat-label>
+                    <input matInput type="number"  placeholder="Enter the web site of the Client" formControlName="defaultTravelMilesAmount">
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            
+            <div class="col-md-4">
+                <mat-form-field>
+                    <mat-label>Phone number</mat-label>
+                    <input matInput appPhoneMask placeholder="Phone number" formControlName="phoneNumber"
+                    >
+                    <!-- <mat-error *ngIf="clientForm.get('phoneNumber').hasError('required')">
+                        Phone number is <strong>required</strong>
+                    </mat-error>
+                    <mat-error *ngIf="!clientForm.get('phoneNumber').hasError('required') &&clientForm.get('phoneNumber').hasError('pattern')">
+                    Please enter valid mumber
+                    </mat-error> -->
+                </mat-form-field>
+            </div>
+            <div class="col-md-4">
+                <mat-form-field>
+                    <mat-label>Cell number</mat-label>
+                    <input matInput appPhoneMask placeholder="Cell number" formControlName="cellNumber"
+                    >
+                </mat-form-field>
+            </div>
+            <div class="col-md-4">
+                <mat-form-field>
+                    <mat-label>Fax number</mat-label>
+                    <input matInput appPhoneMask placeholder="Fax number" formControlName="fax"
+                    >
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-5">
+                <mat-form-field>
+                    <mat-label>Contact Name</mat-label>
+                    <input matInput placeholder="Enter the contact name of the Client" formControlName="contactName">
+                </mat-form-field>
+            </div>
+            <div class="col-md-4">
+                <mat-form-field>
+                    <mat-label>Contact Email</mat-label>
+                    <input matInput placeholder="Contact Email" formControlName="contactEmail"
+                   >
+                </mat-form-field>
+            </div>
+            <div class="col-md-3">
+                <mat-form-field>
+                    <mat-label>Contact Phone Number</mat-label>
+                    <input matInput appPhoneMask placeholder="Contact Phone Number" formControlName="contactPhoneNumber"
+                    >
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <mat-form-field >
+                    <mat-label>Note</mat-label>
+                    <textarea matInput placeholder="Enter a note of the Client" formControlName="note" ></textarea>
+                </mat-form-field>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <h2>Main Provider</h2>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <mat-form-field>
+                    <mat-label>Title Student</mat-label>
+                    <mat-select required formControlName="idTitleProvider" >
+                      <mat-option *ngFor="let item of TitleStudents" [value]="item.id">
+                        {{item.name}}
+                        <span class="additional-selection">
+                            {{item.description}}
+                        </span> 
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>            
+        </div> 
+        <div class="row">
+            <div class="col-md-4">
+                <mat-form-field>
+                    <mat-label>First Name</mat-label>
+                    <input matInput required placeholder="Enter the first name of the Provider" formControlName="firstNameMainProvider" >
+                </mat-form-field>
+            </div>
+            <div class="col-md-4">
+                <mat-form-field>
+                    <mat-label>Last Name</mat-label>
+                    <input matInput required placeholder="Enter the last name of the Provider" formControlName="lastNameMainProvider" >
+                </mat-form-field>
+            </div>
+            <div class="col-md-4">
+                <mat-form-field>
+                    <mat-label>Suffix</mat-label>
+                    <input matInput placeholder="Enter the last name of the Provider" formControlName="suffixMainProvider" >
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <mat-form-field>
+                    <mat-label>Email</mat-label>
+                    <input matInput required placeholder="Enter the email of the Provider" formControlName="emailMainProvider" >
+                    <mat-error *ngIf="clientForm.get('emailMainProvider').invalid">{{getErrorMessage()}}</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-4">
+                <mat-form-field>
+                    <mat-label>Phone number</mat-label>
+                    <input matInput required appPhoneMask placeholder="Phone number" formControlName="phoneNumberMainProvider"
+                   >
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <mat-form-field>
+                    <mat-label>State Board License</mat-label>
+                    <input matInput placeholder="Enter the State Board License of the state board license" formControlName="stateBoardLicense" >
+                </mat-form-field>
+            </div>
+            <div class="col-md-4">
+                <mat-form-field>
+                    <mat-label>DAE</mat-label>
+                    <input matInput placeholder="Enter the DAE of the Provider" formControlName="DAE" >
+                </mat-form-field>
+            </div>
+        </div>
+        <button class="btn btn-success" [disabled]="clientForm.invalid"
+            type="submit">Submit
+        </button>
+    </form>
+</div>
+
+  

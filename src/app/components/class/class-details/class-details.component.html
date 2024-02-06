@@ -1,0 +1,286 @@
+<style>
+    .class-detail-container{
+        width: 80%;
+        margin: auto;
+        padding-top: 15px;
+        padding-bottom: 20px;
+    }
+mat-form-field.mat-form-field {
+  font-size: 18px;
+  width: 100%;
+}
+:host ::ng-deep .mat-select-disabled .mat-select-value {
+    color: rgba(0,0,0,.87);
+}
+</style>
+
+
+<nav class="navbar navbar-expand navbar-light bg-light" style="height:71.6px;">
+    <a class="navbar-brand" href="#">Class Details</a>
+    <span class="navbar__separator navbar__separator--v"></span>
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav">
+            <li class="nav-item " >
+            </li>
+        </ul>
+        <ul class="nav navbar-nav row justify-content-end " style="width: 100%;">
+            <li class="nav-item col-sm-3">
+                <mat-form-field>
+                    <mat-label>Select certifate type to export</mat-label>
+                    <mat-select  (selectionChange)="download($event)">
+                        <mat-option [value]="1" [disabled]="!isCertificate">
+                            Certificate
+                        </mat-option>
+                        <mat-option [value]="2" [disabled]="!isStudentCeu">
+                            Student CEU
+                        </mat-option>
+                        <mat-option [value]="3" [disabled]="!isStudentCard">
+                            Student Cards
+                        </mat-option>
+                        <mat-option [value]="4" [disabled]="!isRoster">
+                            Roster
+                        </mat-option>
+                        <mat-option [value]="5" [disabled]="!isRosterCPR">
+                            Roster CPR
+                        </mat-option>
+                        <mat-option [value]="6">
+                            Roster Blank
+                        </mat-option>
+                        <mat-option [value]="7">
+                          OSHA Info
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="mat-z12 " id="test" style="background-color: white;">
+    <div class="class-detail-container">
+        <div class="new-class-container">
+            <form class="new-class-form" [formGroup]="ClassForm" (ngSubmit)="onUpdateClass()" >
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        <mat-form-field>
+                            <mat-label>Class Number</mat-label>
+                            <input matInput readonly required placeholder="Enter the Number of the Class" formControlName="number">
+                        </mat-form-field>
+
+                    </div>
+                    <div class="col-sm-4">
+                        <mat-form-field>
+                            <mat-label>Teaching Mode</mat-label>
+                            <mat-select required [disabled]="classDone" formControlName="idTeachingMode" >
+                              <mat-option *ngFor="let item of TeachingModes" [value]="item.id">
+                                {{item.name}}
+                              </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <mat-form-field>
+                            <mat-label>Client</mat-label>
+                            <input matInput readonly required placeholder="Enter the Number of the Class" formControlName="idClient">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <mat-form-field>
+                            <mat-label>Location</mat-label>
+                            <mat-select [disabled]="classDone" required formControlName="idAddress" (selectionChange)="addressSelected($event.value)">
+                                <mat-option *ngFor="let item of ClientAddresses" [value]="item.id">
+                                    {{item.address1}} {{item.address2}}, {{item.city}} {{item.zip}} {{item.state}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <mat-form-field>
+                            <mat-label>Street</mat-label>
+                            <input matInput [readonly]="classDone" required placeholder="Enter the street of the Class Place" formControlName="street">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <mat-form-field>
+                            <mat-label>Street 2</mat-label>
+                            <input matInput [readonly]="classDone" placeholder="Enter the street complementary of the Class Place" formControlName="street2">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <mat-form-field>
+                            <mat-label>City</mat-label>
+                            <input matInput [readonly]="classDone" required placeholder="Enter the city of the Class Place" formControlName="city">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-2">
+                        <mat-form-field>
+                            <mat-label>Zip Code</mat-label>
+                            <input matInput [readonly]="classDone" maxlength="5" required placeholder="Enter the zip code of the Class Place" formControlName="zip">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-4">
+                        <mat-form-field>
+                            <input type="text"
+                            matInput
+                            placeholder="States"
+                            formControlName="state"
+                            required
+                            [readonly]="classDone"
+                            [matAutocomplete]="autoGroup">
+                            <mat-autocomplete #autoGroup="matAutocomplete">
+                                <mat-optgroup *ngFor="let group of stateGroupOptions | async" [label]="group.letter">
+                                <mat-option *ngFor="let name of group.names" [value]="name">
+                                    {{name}}
+                                </mat-option>
+                            </mat-optgroup>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-2">
+                        <mat-form-field>
+                            <mat-label>Phone Number</mat-label>
+                            <input matInput [readonly]="classDone" appPhoneMask placeholder="Phone number" formControlName="phoneNumber"
+                           >
+
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <mat-form-field>
+                            <mat-label>Emergency Contact</mat-label>
+                            <input matInput [readonly]="classDone" placeholder="Enter the city of the Class Place" formControlName="emergencyContact">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-4">
+                        <mat-form-field>
+                            <mat-label>Emergency Phone Number</mat-label>
+                            <input appPhoneMask [readonly]="classDone" matInput placeholder="Phone number" formControlName="emergencyPhone"
+                          >
+
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-4">
+                      <mat-form-field>
+                          <mat-label>Discount</mat-label>
+                          <input type="number" [readonly]="classDone" matInput placeholder="Discount" formControlName="discount">
+                      </mat-form-field>
+                  </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <mat-form-field>
+                            <mat-label>Miles Travel</mat-label>
+                            <input matInput [readonly]="classDone" placeholder="Enter the city of the Class Place" formControlName="milesTravel">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-4">
+                        <mat-form-field>
+                            <mat-label>Time Travel (hours)</mat-label>
+                            <input matInput [readonly]="classDone"  placeholder="Enter the zip code of the Class Place" formControlName="timeTravel">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-4">
+                        <mat-form-field>
+                            <mat-label>Mile Amount</mat-label>
+                            <input matInput  placeholder="Enter the mile amount of the Class" formControlName="mileAmount">
+                        </mat-form-field>
+                    </div>
+                </div>
+                 <div *ngFor="let control of formData.controls; let i=index">
+                    <hr>
+                    <h3>Course #{{i+1}}</h3>
+                    <div [formGroup]="control">
+                    <input matInput readonly hidden formControlName="idClassDetail">
+                        <div class="row">
+                            <div class="col-sm-9">
+                                <mat-form-field>
+                                    <mat-label>Course</mat-label>
+                                    <mat-select formControlName="idCourse" (selectionChange)="courseSelected($event.value, i)">
+                                        <mat-option>
+                                            <ngx-mat-select-search placeholderLabel="Search" [formControl]="coursesFilterCtrl"></ngx-mat-select-search>
+                                        </mat-option>
+                                        <mat-option *ngFor="let item of filteredCourses | async" [value]="item.id">
+                                            {{item.title}} - {{item.description}} ({{item.TypeStudent.name}})
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <mat-form-field>
+                                    <mat-label>Cost</mat-label>
+                                    <mat-icon matSuffix>attach_money</mat-icon>
+                                    <input matInput [readonly]="classDone" type="number" placeholder="Enter the Cost of the Course" formControlName="cost">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-3">
+                                <mat-form-field>
+                                    <mat-label>Start Date</mat-label>
+                                    <input matInput [readonly]="classDone"  [owlDateTime]="startDatePicker" [owlDateTimeTrigger]="startDatePicker" (ngModelChange)="startDateChange(i)" placeholder="Date Time" formControlName="startDate" required>
+                                    <owl-date-time #startDatePicker [hour12Timer]="true"></owl-date-time>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-3">
+                                <mat-form-field>
+                                    <mat-label>End Date</mat-label>
+                                    <input matInput [readonly]="classDone" [owlDateTime]="endDatePicker" [owlDateTimeTrigger]="endDatePicker" placeholder="Date Time" formControlName="endDate" required>
+                                    <owl-date-time #endDatePicker [hour12Timer]="true"></owl-date-time>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-3">
+                              <mat-form-field>
+                                  <mat-label>Order</mat-label>
+                                  <input matInput type="number" placeholder="Enter the Invoice Order" formControlName="order">
+                              </mat-form-field>
+                          </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <mat-form-field>
+                                    <mat-label>Students</mat-label>
+                                    <mat-select [disabled]="classDone" required formControlName="idStudents" multiple>
+                                        <mat-option>
+                                            <ngx-mat-select-search placeholderLabel [formControl]="studentsFilterCtrl[i]"></ngx-mat-select-search>
+                                        </mat-option>
+                                        <mat-option *ngFor="let item of filteredStudents[i] | async" [value]="item.id">
+                                            {{item.firstName}} {{item.lastName}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <button *ngIf="!classDone" style="margin-bottom:5px ;" (click)="removeCourse(i)" class="btn btn-primary mr-5">Remove</button>
+
+                    </div>
+                </div>
+                <button *ngIf="!classDone" (click)="addCourse(coursesIndex)" class="btn btn-primary mr-5">Add Course</button>
+
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <mat-form-field >
+                            <mat-label>Note</mat-label>
+                            <textarea  matInput placeholder="Enter a note of the Class" formControlName="note" ></textarea>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <button class="btn btn-success" [disabled]="ClassForm.invalid"
+                type="submit">Update
+            </button>
+            </form>
+        </div>
+    </div>
+</div>
